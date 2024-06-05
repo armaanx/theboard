@@ -4,11 +4,13 @@ import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/useApiMutation";
 import { useOrganization } from "@clerk/clerk-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export const EmptyBoard = () => {
   const { organization } = useOrganization();
   const { mutate, pending } = useApiMutation(api.board.create);
+  const router = useRouter();
   const onClick = () => {
     if (!organization) return;
     mutate({
@@ -17,7 +19,7 @@ export const EmptyBoard = () => {
     })
       .then((id) => {
         toast.success("Board Created");
-        //todo redirect
+        router.push(`/board/${id}`);
       })
       .catch(() => {
         toast.error("Failed to create a board");

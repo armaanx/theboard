@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { mutation } from "./_generated/server";
-import { title } from "process";
 
 const images = [
   "/placeholders/1.svg",
@@ -42,6 +41,17 @@ export const remove = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error("Unauthorized");
+    }
+    const userId = identity.subject;
+    const existingFavorite = await ctx.db
+      .query("userFavorites")
+      .withIndex("by_user_board", (q) =>
+        q.eq("userId", userId).eq("boardId", args.id)
+      )
+      .unique();
+
+    if (existingFavorite) {
+      await ctx.db.delete(existingFavorite._id);
     }
     await ctx.db.delete(args.id);
   },
