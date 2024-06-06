@@ -4,3 +4,16 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+const COLORS = [
+  "#DC2626",
+  "#D97601",
+  "#7C3aed",
+  "#ff1234",
+  "#Dbff12",
+  "#bb1782",
+];
+
+export function connectionIdToColor(connectionId: number): string {
+  return COLORS[connectionId % COLORS.length];
+}
