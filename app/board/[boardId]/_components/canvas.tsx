@@ -20,7 +20,14 @@ interface CanvasProps {
 }
 
 export const Canvas = ({ boardId }: CanvasProps) => {
+  const [canvasState, setCanvasState] = useState<CanvasState>({
+    mode: CanvasMode.None,
+  });
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
+  const history = useHistory();
+  const canUndo = useCanUndo();
+  const canRedo = useCanRedo();
+  const info = useSelf((me) => me.info);
   const onWheel = useCallback((e: React.WheelEvent) => {
     console.log({ x: e.deltaX, y: e.deltaY });
     setCamera((camera) => ({
@@ -28,13 +35,6 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       y: camera.y - e.deltaY,
     }));
   }, []);
-  const history = useHistory();
-  const canUndo = useCanUndo();
-  const canRedo = useCanRedo();
-  const [canvasState, setCanvasState] = useState<CanvasState>({
-    mode: CanvasMode.None,
-  });
-  const info = useSelf((me) => me.info);
   const onPointerMove = useMutation(
     ({ setMyPresence }, e: React.PointerEvent) => {
       e.preventDefault();
