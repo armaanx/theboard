@@ -12,7 +12,7 @@ import { memo } from "react";
 export const Cursor = memo(({ connectionId }: CursorProps) => {
   const info = useOther(connectionId, (user) => user?.info);
   const cursor = useOther(connectionId, (user) => user?.presence.cursor);
-  const name = info?.name || "Teammate";
+  const name = info?.name || "Team Member";
   if (!cursor) {
     return null;
   }
